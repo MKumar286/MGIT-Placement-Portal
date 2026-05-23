@@ -46,7 +46,7 @@
             margin-bottom: 40px;
         }
 
-        /* SVG University Crest Badge Placeholder matching the image */
+        /* SVG University Crest Badge Placeholder */
         .crest-icon {
             width: 60px;
             height: 60px;
@@ -62,7 +62,7 @@
             text-transform: uppercase;
         }
 
-        /* Login Grid Layout */
+        /* Login Grid Layout - Adapts fluidly */
         .login-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -148,6 +148,7 @@
             color: var(--text-dark);
             outline: none;
             transition: border-color 0.2s;
+            -webkit-appearance: none; /* Fix for iOS input rendering */
         }
 
         .form-group input:focus {
@@ -211,6 +212,7 @@
             font-size: 13px;
             font-weight: 500;
             transition: color 0.2s;
+            padding: 5px 0; /* Easier to tap on mobile */
         }
 
         .card-links a:hover {
@@ -218,11 +220,43 @@
             text-decoration: underline;
         }
 
-        /* Responsive Configuration for Tablets/Mobiles */
-        @media (max-width: 968px) {
+        /* --- MOBILE RESPONSIVE QUERIES --- */
+        
+        /* Tablets & Smaller Desktops */
+        @media (max-width: 1024px) {
             .login-container {
-                grid-template-columns: 1fr;
-                max-width: 450px;
+                grid-template-columns: repeat(2, 1fr); /* Drop to 2 columns */
+                gap: 20px;
+            }
+        }
+
+        /* Mobile Devices (Smartphones) */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .header-logo {
+                margin-bottom: 25px;
+            }
+
+            .header-logo h1 {
+                font-size: 22px;
+            }
+
+            .login-container {
+                grid-template-columns: 1fr; /* Single column stack */
+                max-width: 420px; /* Centered compact layout */
+                gap: 25px;
+            }
+
+            .card-body {
+                padding: 25px 20px; /* Slightly tighter padding for mobile screens */
+            }
+
+            .welcome-msg {
+                font-size: 15px;
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -234,7 +268,7 @@
         <svg class="crest-icon" viewBox="0 0 24 24">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
         </svg>
-        <h1>Mahatma Gandhi Institute of Technology (A)</h1>
+        <h1>City Global University</h1>
     </div>
 
     <!-- Login Options Workspace Grid wrapper -->
