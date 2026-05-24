@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Database - MGIT</title>
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --primary-blue: #1c3160;
+            --accent-orange: #ff8800;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-blue);
+            color: var(--white);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-brand span { color: var(--accent-orange); }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .nav-item.active a {
+            border-left: 4px solid var(--accent-orange);
+            background-color: rgba(255, 136, 0, 0.15);
+            color: var(--white);
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            background-color: rgba(220, 38, 38, 0.2);
+            color: #fca5a5;
+            text-align: center;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-btn:hover {
+            background-color: rgba(220, 38, 38, 0.4);
+            color: var(--white);
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .welcome-text h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        /* FILTER CARD LAYOUT */
+        .filter-card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            max-width: 600px;
+        }
+
+        /* Side-by-Side Flex Layout */
+        .filter-form {
+            display: flex;
+            align-items: flex-end; 
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .filter-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .year-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-dark);
+            background-color: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .year-select:focus {
+            border-color: var(--primary-blue);
+        }
+
+        /* VIEW STUDENTS SUBMIT BUTTON */
+        .submit-btn {
+            background-color: var(--accent-orange);
+            color: var(--white);
+            border: none;
+            padding: 13px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .submit-btn:hover {
+            background-color: #e07700;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .filter-form { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="color: var(--accent-orange)">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            MGIT <span>TPO</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="dashboard.html">Dashboard Home</a></li>
+            <li class="nav-item active"><a href="students.html">Student Database</a></li>
+            <li class="nav-item"><a href="#">Company Drives</a></li>
+            <li class="nav-item"><a href="#">Analytics Reports</a></li>
+            <li class="nav-item"><a href="#">System Settings</a></li>
+        </ul>
+        <a href="index.html" class="logout-btn">Log Out</a>
+    </div>
+
+    <!-- MAIN APP WORKSPACE -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="welcome-text">
+                <h2>Student Database Profiles</h2>
+                <p>Select an academic batch to view complete registration listings</p>
+            </div>
+        </div>
+
+        <!-- DROPDOWN & VIEW STUDENTS BUTTON CONTAINER -->
+        <div class="filter-card">
+            <!-- Directly linked using native HTML action submission to remove JS errors -->
+            <form class="filter-form" id="yearForm" action="view-students.html" method="GET">
+                <div class="filter-group">
+                    <label for="academicYear">Academic Year</label>
+                    <select id="academicYear" name="year" class="year-select" required>
+                        <option value="" disabled selected>-- Select Academic Year --</option>
+                        <option value="2025-2026">2025-2026</option>
+                        <option value="2026-2027">2026-2027</option>
+                        <option value="2027-2028">2027-2028</option>
+                        <option value="2028-2029">2028-2029</option>
+                        <option value="2029-2030">2029-2030</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">View Students</button>
+            </form>
+        </div>

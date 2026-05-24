@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPO Admin Dashboard - MGIT</title>
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --primary-blue: #1c3160; /* Official MGIT Corporate Navy */
+            --accent-orange: #ff8800; /* Official MGIT Secondary Orange */
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-blue);
+            color: var(--white);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent-orange);
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .nav-item.active a {
+            border-left: 4px solid var(--accent-orange);
+            background-color: rgba(255, 136, 0, 0.15);
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            background-color: rgba(220, 38, 38, 0.2);
+            color: #fca5a5;
+            text-align: center;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background-color: rgba(220, 38, 38, 0.4);
+            color: var(--white);
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        /* TOP DASHBOARD BAR */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .welcome-text h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .welcome-text p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .user-profile-badge {
+            background: var(--white);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+        }
+
+        /* KPI METRIC CARDS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+
+        .metric-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .metric-title {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .metric-subtext {
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 500;
+        }
+        .metric-subtext.neutral { color: var(--text-muted); }
+
+        /* DATA SECTIONS GRID */
+        .data-layout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .data-card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 24px;
+        }
+
+        .card-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title-bar h3 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* INTERACTIVE APPLICANT TABLE */
+        .placement-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .placement-table th {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .placement-table td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge.placed { background-color: #d1fae5; color: #065f46; }
+        .badge.pending { background-color: #fef3c7; color: #92400e; }
+
+        /* RECENT DRIVES SUMMARY LIST */
+        .drive-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .drive-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .drive-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .drive-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .ctc-tag {
+            background-color: #edf2f7;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1200px) {
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .data-layout-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .metrics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR COMPONENT -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="color: var(--accent-orange)">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            MGIT <span>TPO</span>
+        </div>
+      <ul class="nav-list">
+        <li class="nav-item active"><a href="dashboard.html">Dashboard Home</a></li>
+        <li class="nav-item"><a href="students.html">Student Database</a></li> <!-- Points to your new page -->
+       <li class="nav-item"><a href="#">Company Drives</a></li>
+       <li class="nav-item"><a href="#">Analytics Reports</a></li>
+       <li class="nav-item"><a href="#">System Settings</a></li>
+</ul>
+        <a href="index.html" class="logout-btn">Log Out</a>
+    </div>
+
+    <!-- MAIN APP CANVAS -->
+    <div class="main-content">
+        
+        <!-- HEADER PROFILE CONTEXT -->
+        <div class="top-bar">
+            <div class="welcome-text">
+                <h2>MGIT Placements Command Center</h2>
+                <p>Training & Placement Officer Access Panel</p>
+            </div>
+            <div class="user-profile-badge">
+                <div class="status-dot"></div>
+                placements@mgit.ac.in
+            </div>
+        </div>
+
+        <!-- KPI ANALYTICS ROW -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Registered</div>
+                <div class="metric-value">840</div>
+                <div class="metric-subtext neutral">B.Tech Phase 1 & 2</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Placed Students</div>
+                <div class="metric-value">551</div>
+                <div class="metric-subtext">↑ 78% Conversion Rate</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Active Companies</div>
+                <div class="metric-value">42</div>
+                <div class="metric-subtext neutral">In-campus Drives</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Highest Package</div>
+                <div class="metric-value">30.0 LPA</div>
+                <div class="metric-subtext">Amazon Global Dev</div>
+            </div>
+        </div>
+
+        <!-- MAIN DATA DISPLAY ROW -->
+        <div class="data-layout-grid">
+            
+            <!-- LEFT AREA: DETAILED MONITORING REGISTRY -->
+            <div class="data-card">
+                <div class="card-title-bar">
+                    <h3>Recent Eligibility Status Registry</h3>
+                </div>
+                <table class="placement-table">
+                    <thead>
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Student Name</th>
+                            <th>Branch</th>
+                            <th>CGPA</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>21261A0501</td>
+                            <td>Rahul Kumar</td>
+                            <td>CSE</td>
+                            <td>9.14</td>
+                            <td><span class="badge placed">Placed</span></td>
+                        </tr>
+                        <tr>
+                            <td>21261A0412</td>
+                            <td>Sneha Reddy</td>
+                            <td>ECE</td>
+                            <td>8.72</td>
+                            <td><span class="badge placed">Placed</span></td>
+                        </tr>
+                        <tr>
+                            <td>21261A1205</td>
+                            <td>V. Sai Kiran</td>
+                            <td>IT</td>
+                            <td>7.95</td>
+                            <td><span class="badge pending">Pending Call</span></td>
+                        </tr>
+                        <tr>
+                            <td>21261A0322</td>
+                            <td>Anish Sharma</td>
+                            <td>MECH</td>
+                            <td>8.20</td>
+                            <td><span class="badge placed">Placed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RIGHT AREA: RECENT DRIVES LOG -->
+            <div class="data-card">
+                <div class="card-title-bar">
+                    <h3>Upcoming Recruitment</h3>
+                </div>
+                <div class="drive-list">
+                    <div class="drive-item">
+                        <div class="drive-info">
+                            <h4>Cognizant Tech</h4>
+                            <p>Date: May 28, 2026</p>
+                        </div>
+                        <div class="ctc-tag">6.5 LPA</div>
+                    </div>
+                    <div class="drive-item">
+                        <div class="drive-info">
+                            <h4>Deloitte India</h4>
+                            <p>Date: June 02, 2026</p>
+                        </div>
+                        <div class="ctc-tag">8.2 LPA</div>
+                    </div>
+                    <div class="drive-item">
+                        <div class="drive-info">
+                            <h4>Infosys Ltd</h4>
+                            <p>Date: June 10, 2026</p>
+                        </div>
+                        <div class="ctc-tag">5.0 LPA</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

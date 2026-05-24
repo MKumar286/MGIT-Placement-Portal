@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Data Management - MGIT</title>
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --primary-blue: #1c3160;
+            --accent-orange: #ff8800;
+            --bg-light: #f1f5f9;
+            --white: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-blue);
+            color: var(--white);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-brand span { color: var(--accent-orange); }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .nav-item.active a {
+            border-left: 4px solid var(--accent-orange);
+            background-color: rgba(255, 136, 0, 0.15);
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            background-color: rgba(220, 38, 38, 0.2);
+            color: #fca5a5;
+            text-align: center;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-btn:hover {
+            background-color: rgba(220, 38, 38, 0.4);
+            color: var(--white);
+        }
+
+        /* MAIN CANVAS SPACE */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        /* INSTITUTIONAL BANNER HEADERS */
+        .institution-header {
+            text-align: center;
+            background-color: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 35px;
+        }
+
+        .institution-header h1 {
+            color: var(--primary-blue);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .institution-header h2 {
+            color: var(--accent-orange);
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .batch-badge {
+            display: inline-block;
+            background-color: #e2e8f0;
+            color: var(--primary-blue);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* 15 CARDS GRID SYSTEM */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .data-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            cursor: pointer;
+        }
+
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-orange);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            margin-bottom: 16px;
+        }
+
+        .data-card:hover .card-icon {
+            background-color: rgba(255, 136, 0, 0.1);
+            color: var(--accent-orange);
+        }
+
+        .card-details h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .card-details p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .card-action-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .data-card:hover .card-action-text {
+            color: var(--accent-orange);
+        }
+
+        /* RESPONSIVE STRUCTURE */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .institution-header h1 { font-size: 22px; }
+            .institution-header h2 { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR NAV COMPONENT -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="color: var(--accent-orange)">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            MGIT <span>TPO</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="dashboard.html">Dashboard Home</a></li>
+            <li class="nav-item active"><a href="students.html">Student Database</a></li>
+            <li class="nav-item"><a href="#">Company Drives</a></li>
+            <li class="nav-item"><a href="#">Analytics Reports</a></li>
+            <li class="nav-item"><a href="#">System Settings</a></li>
+        </ul>
+        <a href="index.html" class="logout-btn">Log Out</a>
+    </div>
+
+    <!-- MAIN APP SCREENSPACE -->
+    <div class="main-content">
+        
+        <!-- MAIN HEADINGS SECTION -->
+        <div class="institution-header">
+            <h1>Mahatma Gandhi Institute of Technology (A)</h1>
+            <h2>Training & Placement Cell</h2>
+            <div class="batch-badge">Students Data for the Academic Year 2025-2026</div>
+        </div>
+
+        <!-- 15 FUNCTIONAL ARCHITECTURE CARDS -->
+        <div class="cards-grid">
+
+            <!-- Card 1 -->
+            <div class="data-card" onclick="window.location.href='table.html'"></div>
+                <div class="card-details">
+                    <div class="card-icon">📁</div>
+                    <h3>1. Master Students Data</h3>
+                    <p>Complete centralized data registry containing profiles of all registered candidates.</p>
+                </div>
+                <div class="card-action-text">Access Sheet Records →</div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="data-card" onclick="alert('Opening Placed Student Repositories...')">
+                <div class="card-details">
+                    <div class="card-icon">🎓</div>
+                    <h3>2. Placed Students Data</h3>
+                    <p>Verified index of single and multiple job offers secured by candidates.</p>
+                </div>
+                <div class="card-action-text">View Offer Records →</div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="data-card" onclick="alert('Opening Dispatch Verification Desk...')">
+                <div class="card-details">
+                    <div class="card-icon">✉️</div>
+                    <h3>3. Mail Confirmation</h3>
+                    <p>Dispatch records and receipt status for tracking confirmations from selected students.</p>
+                </div>
+                <div class="card-action-text">Monitor Emails →</div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="data-card" onclick="alert('Opening Eligibility Rule Filter...')">
+                <div class="card-details">
+                    <div class="card-icon">⚙️</div>
+                    <h3>4. Criteria & Eligibility Filter</h3>
+                    <p>Sort out candidate pools based on parameters like CGPA, backlogs, and streams.</p>
+                </div>
+                <div class="card-action-text">Run Filters →</div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="data-card" onclick="alert('Opening Company Allocation Sheets...')">
+                <div class="card-details">
+                    <div class="card-icon">🏢</div>
+                    <h3>5. Company-Wise Applied List</h3>
+                    <p>Track student applications grouped across active structural corporate drive metrics.</p>
+                </div>
+                <div class="card-action-text">View Listings →</div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="data-card" onclick="alert('Opening Unplaced Student Tracking...')">
+                <div class="card-details">
+                    <div class="card-icon">🔍</div>
+                    <h3>6. Unplaced Student Matrix</h3>
+                    <p>Identified list of unplaced students requiring strategic drive alignments.</p>
+                </div>
+                <div class="card-action-text">View Profiles →</div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="data-card" onclick="alert('Opening Resume Verification Portal...')">
+                <div class="card-details">
+                    <div class="card-icon">📄</div>
+                    <h3>7. Verified Resume Repository</h3>
+                    <p>Access links to approved professional standard student resumes.</p>
+                </div>
+                <div class="card-action-text">Review Resumes →</div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="data-card" onclick="alert('Opening Training Attendance Dashboard...')">
+                <div class="card-details">
+                    <div class="card-icon">📊</div>
+                    <h3>8. CRT Attendance Tracker</h3>
+                    <p>Monitor training attendance logs for Campus Recruitment Training modules.</p>
+                </div>
+                <div class="card-action-text">Check Logs →</div>
+            </div>
+
+            <!-- Card 9 -->
+            <div class="data-card" onclick="alert('Opening Internship Logs...')">
+                <div class="card-details">
+                    <div class="card-icon">💼</div>
+                    <h3>9. Internship Allocations</h3>
+                    <p>Track concurrent internship offers and ongoing field projects.</p>
+                </div>
+                <div class="card-action-text">Track Internships →</div>
+            </div>
+
+            <!-- Card 10 -->
+            <div class="data-card" onclick="alert('Opening Mock Assessment Grading...')">
+                <div class="card-details">
+                    <div class="card-icon">✍️</div>
+                    <h3>10. Assessment Analytics</h3>
+                    <p>Grades and scoring breakdowns from technical and aptitude evaluations.</p>
+                </div>
+                <div class="card-action-text">View Scores →</div>
+            </div>
+
+            <!-- Card 11 -->
+            <div class="data-card" onclick="alert('Opening Branch Metrics Summary...')">
+                <div class="card-details">
+                    <div class="card-icon">📐</div>
+                    <h3>11. Department-Wise Analytics</h3>
+                    <p>Percentage distributions and key conversion statistics mapped by branch.</p>
+                </div>
+                <div class="card-action-text">View Branch Stats →</div>
+            </div>
+
+            <!-- Card 12 -->
+            <div class="data-card" onclick="alert('Opening Blacklisted Registry Panel...')">
+                <div class="card-details">
+                    <div class="card-icon">🚫</div>
+                    <h3>12. Policy Exception Logs</h3>
+                    <p>Records of students suspended from drives due to policy non-compliance.</p>
+                </div>
+                <div class="card-action-text">Review Suspensions →</div>
+            </div>
+
+            <!-- Card 13 -->
+            <div class="data-card" onclick="alert('Opening Interview Stage Tracking...')">
+                <div class="card-details">
+                    <div class="card-icon">⏳</div>
+                    <h3>13. Round-Wise Shortlists</h3>
+                    <p>Real-time updates on candidates clearing preliminary rounds of ongoing drives.</p>
+                </div>
+                <div class="card-action-text">Check Progress →</div>
+            </div>
+
+            <!-- Card 14 -->
+            <div class="data-card" onclick="alert('Opening Package Slotting Sheets...')">
+                <div class="card-details">
+                    <div class="card-icon">💰</div>
+                    <h3>14. CTC Category Index</h3>
+                    <p>Categorized lists based on packages (Dream, Super Dream, and Marquee offers).</p>
+                </div>
+                <div class="card-action-text">Analyze Packages →</div>
+            </div>
+
+            <!-- Card 15 -->
+            <div class="data-card" onclick="alert('Opening Alumnus Engagement Vault...')">
+                <div class="card-details">
+                    <div class="card-icon">🤝</div>
+                    <h3>15. Higher Studies & Entrepreneurship</h3>
+                    <p>Tracks graduates opting out of placements for higher studies or ventures.</p>
+                </div>
+                <div class="card-action-text">View Opt-Out List →</div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
