@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025-2026 Placement Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --glass-bg: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.12);
+    --sidebar-bg: rgba(15,23,42,0.7);
+    --card-bg: rgba(255,255,255,0.06);
+    --text-color:#ffffff;
+    --hover-color:#38bdf8;
+
+}
+
+body{
+
+    font-family:'Segoe UI', sans-serif;
+
+    background:
+    radial-gradient(circle at top left,#1e293b 0%,transparent 25%),
+    radial-gradient(circle at bottom right,#0f172a 0%,transparent 25%),
+    linear-gradient(135deg,#020617,#0f172a,#111827);
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    color:white;
+
+}
+
+/* Animated Background Glow */
+
+body::before{
+
+    content:'';
+
+    position:fixed;
+
+    width:600px;
+    height:600px;
+
+    background:#0284c7;
+
+    filter:blur(180px);
+
+    opacity:0.25;
+
+    top:-200px;
+    left:-200px;
+
+    animation:move1 10s infinite alternate;
+
+}
+
+body::after{
+
+    content:'';
+
+    position:fixed;
+
+    width:500px;
+    height:500px;
+
+    background:#22c55e;
+
+    filter:blur(180px);
+
+    opacity:0.20;
+
+    bottom:-200px;
+    right:-200px;
+
+    animation:move2 12s infinite alternate;
+
+}
+
+@keyframes move1{
+
+    from{
+        transform:translate(0,0);
+    }
+
+    to{
+        transform:translate(120px,80px);
+    }
+
+}
+
+@keyframes move2{
+
+    from{
+        transform:translate(0,0);
+    }
+
+    to{
+        transform:translate(-100px,-100px);
+    }
+
+}
+
+/* Layout */
+
+.dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+/* Sidebar */
+
+.sidebar{
+
+    width:270px;
+
+    background:var(--sidebar-bg);
+
+    backdrop-filter:blur(18px);
+
+    border-right:1px solid rgba(255,255,255,0.1);
+
+    position:sticky;
+
+    top:0;
+
+    height:100vh;
+
+    padding:30px 20px;
+
+    z-index:100;
+
+    box-shadow:0 0 30px rgba(0,0,0,0.4);
+
+}
+
+.logo{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    margin-bottom:50px;
+
+    text-align:center;
+
+    letter-spacing:1px;
+
+    color:#38bdf8;
+
+}
+
+.menu{
+
+    list-style:none;
+
+}
+
+.menu li{
+
+    margin-bottom:20px;
+
+}
+
+.menu a{
+
+    text-decoration:none;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:16px 18px;
+
+    border-radius:16px;
+
+    transition:0.4s;
+
+    background:rgba(255,255,255,0.03);
+
+    backdrop-filter:blur(10px);
+
+    border:1px solid transparent;
+
+    font-size:17px;
+
+}
+
+.menu a:hover{
+
+    transform:translateX(10px) scale(1.03);
+
+    background:rgba(56,189,248,0.15);
+
+    border:1px solid rgba(56,189,248,0.3);
+
+    box-shadow:0 0 20px rgba(56,189,248,0.25);
+
+    color:#38bdf8;
+
+}
+
+/* Main Content */
+
+.main-content{
+
+    flex:1;
+
+    padding:40px;
+
+}
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+.topbar h1{
+
+    font-size:38px;
+
+    font-weight:700;
+
+}
+
+.year-badge{
+
+    padding:12px 22px;
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.1);
+
+    border-radius:50px;
+
+    backdrop-filter:blur(10px);
+
+    font-weight:600;
+
+}
+
+/* Cards Grid */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:25px;
+
+    margin-bottom:40px;
+
+}
+
+.card{
+
+    background:var(--card-bg);
+
+    border:1px solid var(--glass-border);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:24px;
+
+    padding:30px;
+
+    transition:0.4s;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.25),
+    inset 0 0 10px rgba(255,255,255,0.03);
+
+}
+
+.card:hover{
+
+    transform:translateY(-10px) rotateX(4deg) scale(1.02);
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,0.4),
+    0 0 20px rgba(56,189,248,0.15);
+
+}
+
+.card h3{
+
+    font-size:20px;
+
+    margin-bottom:15px;
+
+    color:#cbd5e1;
+
+}
+
+.card .number{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    color:#38bdf8;
+
+}
+
+/* Glass Table */
+
+.table-container{
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:30px;
+
+    backdrop-filter:blur(15px);
+
+    overflow-x:auto;
+
+}
+
+.table-container h2{
+
+    margin-bottom:25px;
+
+    font-size:28px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th,td{
+
+    padding:18px;
+
+    text-align:left;
+
+}
+
+th{
+
+    background:rgba(255,255,255,0.08);
+
+    color:#38bdf8;
+
+}
+
+tr{
+
+    border-bottom:1px solid rgba(255,255,255,0.05);
+
+}
+
+tr:hover{
+
+    background:rgba(255,255,255,0.04);
+
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+    .dashboard{
+        flex-direction:column;
+    }
+
+    .sidebar{
+
+        width:100%;
+
+        height:auto;
+
+        position:relative;
+
+    }
+
+    .menu{
+
+        display:grid;
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:10px;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    .main-content{
+        padding:20px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        gap:15px;
+        align-items:flex-start;
+    }
+
+    .menu{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            MGIT TPO
+        </div>
+
+        <ul class="menu">
+
+            <li><a href="#">🏠 Dashboard</a></li>
+            <li><a href="#">🎓 Students</a></li>
+            <li><a href="#">💼 Placements</a></li>
+            <li><a href="#">📊 Reports</a></li>
+            <li><a href="#">📚 Training Programs</a></li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main Content -->
+
+    <div class="main-content">
+
+        <div class="topbar">
+
+            <h1>Placement Dashboard</h1>
+
+            <div class="year-badge">
+                Academic Year : 2025-2026
+            </div>
+
+        </div>
+
+        <!-- Statistic Cards -->
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Students</h3>
+                <div class="number">1450</div>
+            </div>
+
+            <div class="card">
+                <h3>Placed Students</h3>
+                <div class="number">987</div>
+            </div>
+
+            <div class="card">
+                <h3>Companies Visited</h3>
+                <div class="number">82</div>
+            </div>
+
+            <div class="card">
+                <h3>Highest Package</h3>
+                <div class="number">₹32LPA</div>
+            </div>
+
+        </div>
+
+        <!-- Recent Placements Table -->
+
+        <div class="table-container">
+
+            <h2>Recent Placements</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Department</th>
+                        <th>Company</th>
+                        <th>Package</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Rahul Kumar</td>
+                        <td>CSE</td>
+                        <td>TCS</td>
+                        <td>7 LPA</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sneha Reddy</td>
+                        <td>ECE</td>
+                        <td>Infosys</td>
+                        <td>6.5 LPA</td>
+                    </tr>
+
+                    <tr>
+                        <td>Arjun Varma</td>
+                        <td>IT</td>
+                        <td>Accenture</td>
+                        <td>8 LPA</td>
+                    </tr>
+
+                    <tr>
+                        <td>Pooja Sharma</td>
+                        <td>EEE</td>
+                        <td>Wipro</td>
+                        <td>5.5 LPA</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
