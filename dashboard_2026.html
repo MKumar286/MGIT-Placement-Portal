@@ -270,9 +270,9 @@ body::after{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns:repeat(5, 1fr);
 
-    gap:25px;
+    gap:20px;
 
     margin-bottom:40px;
 
@@ -417,6 +417,11 @@ tr:hover{
         gap:10px;
 
     }
+    .cards{
+
+    grid-template-columns:repeat(2,1fr);
+
+}
 
 }
 
@@ -435,6 +440,11 @@ tr:hover{
     .menu{
         grid-template-columns:1fr;
     }
+    .cards{
+
+    grid-template-columns:1fr;
+
+}
 
 }
 
@@ -480,30 +490,36 @@ tr:hover{
         </div>
 
         <!-- Statistic Cards -->
+        <!-- Statistic Cards -->
 
-        <div class="cards">
+<div class="cards">
 
-            <div class="card">
-                <h3>Total Students</h3>
-                <div class="number">1450</div>
-            </div>
+    <div class="card">
+        <h3>Total Students</h3>
+        <div class="number">1450</div>
+    </div>
 
-            <div class="card">
-                <h3>Placed Students</h3>
-                <div class="number">987</div>
-            </div>
+    <div class="card">
+        <h3>Registered for Placements</h3>
+        <div class="number">1320</div>
+    </div>
 
-            <div class="card">
-                <h3>Companies Visited</h3>
-                <div class="number">82</div>
-            </div>
+    <div class="card">
+        <h3>Eligible for Placements</h3>
+        <div class="number">1180</div>
+    </div>
 
-            <div class="card">
-                <h3>Highest Package</h3>
-                <div class="number">₹32LPA</div>
-            </div>
+    <div class="card">
+        <h3>Placed Students</h3>
+        <div class="number">987</div>
+    </div>
 
-        </div>
+    <div class="card">
+        <h3>Total Offers</h3>
+        <div class="number">1542</div>
+    </div>
+
+</div>
 
         <!-- Recent Placements Table -->
 
