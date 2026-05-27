@@ -254,5 +254,23 @@
 </form>
     </div>
 
+    <script>
+
+document.getElementById("academicForm").addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    const selectedPage = document.getElementById("academicYear").value;
+
+    if(selectedPage !== ""){
+
+        window.location.href = selectedPage;
+
+    }
+
+});
+
+</script>
+
 </body>
 </html>
