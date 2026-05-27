@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Select Academic Year</title>
+
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            background:#f1f5f9;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .container{
+            background:white;
+            padding:40px;
+            border-radius:10px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.1);
+            width:500px;
+        }
+
+        h2{
+            margin-bottom:25px;
+            color:#1e293b;
+            text-align:center;
+        }
+
+        .row{
+            display:flex;
+            gap:15px;
+            align-items:center;
+        }
+
+        select{
+            flex:1;
+            padding:12px;
+            border:1px solid #cbd5e1;
+            border-radius:6px;
+            font-size:15px;
+        }
+
+        button{
+            padding:12px 20px;
+            background:#2d6a4f;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:15px;
+            font-weight:600;
+        }
+
+        button:hover{
+            background:#1b4332;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <h2>Select Academic Year</h2>
+
+        <form>
+
+            <div class="row">
+
+                <select required>
+
+                    <option value="">-- Select Academic Year --</option>
+
+                    <option>2025-2026</option>
+                    <option>2026-2027</option>
+                    <option>2027-2028</option>
+                    <option>2028-2029</option>
+                    <option>2029-2030</option>
+
+                </select>
+
+                <button type="submit">
+                    Submit
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
