@@ -217,32 +217,41 @@
 
         <h2>Select Academic Year</h2>
 
-        <form>
+        <form id="academicForm">
 
-            <div class="row">
+    <div class="row">
 
-                <select required>
+        <select id="academicYear" required>
 
-                    <option value="">
-                        -- Select Academic Year --
-                    </option>
+            <option value="">
+                -- Select Academic Year --
+            </option>
 
-                    <option>2025-2026</option>
-                    <option>2026-2027</option>
-                    <option>2027-2028</option>
-                    <option>2028-2029</option>
-                    <option>2029-2030</option>
+            <option value="dashboard_2022.html">
+                2025-2026
+            </option>
 
-                </select>
+            <option value="dashboard_2023.html">
+                2026-2027
+            </option>
 
-                <button type="submit">
-                    Submit
-                </button>
+            <option value="dashboard_2024.html">
+                2027-2028
+            </option>
 
-            </div>
+            <option value="dashboard_2025.html">
+                2029-2030
+            </option>
 
-        </form>
+        </select>
 
+        <button type="submit">
+            Submit
+        </button>
+
+    </div>
+
+</form>
     </div>
 
 </body>
