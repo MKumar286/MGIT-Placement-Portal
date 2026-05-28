@@ -270,9 +270,9 @@ body::after{
 
     display:grid;
 
-    grid-template-columns:repeat(5, 1fr);
+    grid-template-columns:repeat(5,minmax(220px,1fr));
 
-    gap:20px;
+    gap:18px;
 
     margin-bottom:40px;
 
@@ -286,9 +286,11 @@ body::after{
 
     backdrop-filter:blur(18px);
 
-    border-radius:24px;
+    border-radius:20px;
 
-    padding:30px;
+    padding:18px 12px;
+
+    min-height:130px;
 
     transition:0.4s;
 
@@ -310,17 +312,19 @@ body::after{
 
 .card h3{
 
-    font-size:20px;
+    font-size:15px;
 
-    margin-bottom:15px;
+    margin-bottom:10px;
 
     color:#cbd5e1;
+
+    font-weight:600;
 
 }
 
 .card .number{
 
-    font-size:42px;
+    font-size:30px;
 
     font-weight:700;
 
